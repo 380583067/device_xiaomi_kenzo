@@ -1,17 +1,4 @@
-<!-- 
-    This is a skeleton device manifest. Notes: 
-    1. android.hidl.*, android.frameworks.*, android.system.* are not included.
-    2. If a HAL is supported in both hwbinder and passthrough transport, 
-       only hwbinder is shown.
-    3. It is likely that HALs in passthrough transport does not have
-       <interface> declared; users will have to write them by hand.
-    4. A HAL with lower minor version can be overridden by a HAL with
-       higher minor version if they have the same name and major version.
-    5. sepolicy version is set to 0.0. It is recommended that the entry
-       is removed from the manifest file and written by assemble_vintf
-       at build time.
--->
-<manifest version="1.0" type="device" target-level="legacy">
+<manifest version="1.0" type="device" target-level="5">
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport>hwbinder</transport>
@@ -101,20 +88,21 @@
         </interface>
     </hal>
     <hal format="hidl">
+        <name>android.hardware.graphics.mapper</name>
+        <transport arch="32+64">passthrough</transport>
+        <version>2.1</version>
+        <interface>
+            <name>IMapper</name>
+            <instance>default</instance>
+        </interface>
+        <fqname>@3.0::IMapper/default</fqname>
+    </hal>
+    <hal format="hidl">
         <name>android.hardware.ir</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
             <name>IConsumerIr</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.keymaster</name>
-        <transport>hwbinder</transport>
-        <version>3.0</version>
-        <interface>
-            <name>IKeymasterDevice</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -148,16 +136,6 @@
             <name>IMemtrack</name>
             <instance>default</instance>
         </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.graphics.mapper</name>
-        <transport arch="32+64">passthrough</transport>
-        <version>2.1</version>
-        <interface>
-            <name>IMapper</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@3.0::IMapper/default</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.radio</name>

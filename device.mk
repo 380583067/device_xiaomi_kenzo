@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# Add common definitions for Qualcomm
+$(call inherit-product, hardware/qcom-caf/common/common.mk)
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
@@ -81,6 +83,11 @@ PRODUCT_PACKAGES += \
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
+
+# Control groups and task profiles
+PRODUCT_COPY_FILES += \
+    system/core/libprocessgroup/profiles/cgroups_28.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
+    system/core/libprocessgroup/profiles/task_profiles_28.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -152,10 +159,7 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service \
     camera.device@3.2-impl \
-    camera.msm8952 \
-    libqomx_core \
-    vendor.qti.hardware.camera.device@1.0 \
-    vendor.qti.hardware.camera.device@1.0_vendor
+    vendor.qti.hardware.camera.device@1.0
 
 # Component overrides
 PRODUCT_COPY_FILES += \
@@ -164,6 +168,10 @@ PRODUCT_COPY_FILES += \
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     libcnefeatureconfig
+
+# Configstore
+PRODUCT_PACKAGES += \
+    disable_configstore
 
 # Consumerir
 PRODUCT_PACKAGES += \
@@ -178,32 +186,27 @@ PRODUCT_PACKAGES += \
 
 # Display
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.1-service \
     android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.composer@2.1-service \
     android.hardware.graphics.mapper@2.0-impl-2.1 \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
-    copybit.msm8952 \
     gralloc.msm8952 \
     hwcomposer.msm8952 \
     memtrack.msm8952 \
     libdisplayconfig \
     libqdMetaData \
     libqdMetaData.system \
-    libgenlock \
-    vendor.display.config@1.0 \
-    vendor.display.config@1.0_vendor
+    vendor.display.config@1.0
+
+# Display Device Config
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/displayconfig/display_id_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_0.xml
 
 # DRM
 PRODUCT_PACKAGES += \
-    android.hardware.drm@1.3.vendor \
-    android.hardware.drm@1.4-service.clearkey 
-
-#Face  detection extension
-PRODUCT_PACKAGES += \
-    org.codeaurora.camera
+    android.hardware.drm@1.3.vendor
 
 # Filesystem tools
 PRODUCT_PACKAGES += \
@@ -236,6 +239,7 @@ PRODUCT_COPY_FILES += \
 # Gatekeeper
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0.vendor
+
 # GNSS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0 \
@@ -266,7 +270,12 @@ PRODUCT_PACKAGES += \
     android.hidl.memory@1.0.vendor \
     libhidltransport \
     libhwbinder \
-    vndservicemanager
+    vndservicemanager \
+    hwservicemanager \
+    android.hidl.allocator@1.0-service \
+    android.hidl.base@1.0_system \
+    android.hidl.manager@1.0_system \
+    android.hidl.manager@1.2_system
 
 # Input
 PRODUCT_COPY_FILES += \
@@ -292,20 +301,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
 
-# IPv6
-PRODUCT_PACKAGES += \
-    ebtables \
-    ethertypes \
-    libebtc
-
 # IRQ
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/msm_irqbalance_little_big.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance_little_big.conf
 
 # Keymaster HAL
 PRODUCT_PACKAGES += \
-    android.hardware.keymaster@3.0-impl \
-    android.hardware.keymaster@3.0-service
+    android.hardware.keymaster@4.1-service \
+    android.hardware.gatekeeper@1.0-service.software
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -336,17 +339,17 @@ PRODUCT_PACKAGES += \
 # OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
-    libextmedia_jni \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxCore \
     libOmxEvrcEnc \
-    libOmxG711Enc \
     libOmxQcelp13Enc \
-    libOmxSwVencHevc \
     libOmxVdec \
     libOmxVenc \
     libstagefrighthw
+
+# Partitions
+$(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
 
 # Perf configuration files
 PRODUCT_COPY_FILES += \
@@ -378,7 +381,6 @@ PRODUCT_PACKAGES += \
 # Qualcomm dependencies
 PRODUCT_PACKAGES += \
     libtinyxml \
-    libtinyxml.vendor \
     libxml2
 
 # QMI
@@ -463,6 +465,11 @@ PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-service \
     thermal.msm8952
 
+# TimeKeep
+PRODUCT_PACKAGES += \
+    timekeep \
+    TimeKeep
+
 # USB HAL
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service.kenzo
@@ -480,6 +487,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio/sound_trigger_mixer_paths_wcd9335.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound_trigger_mixer_paths_wcd9335.xml \
     $(LOCAL_PATH)/configs/audio/sound_trigger_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound_trigger_platform_info.xml
 
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    $(LOCAL_PATH)
+
 # WCNSS
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wifi/WCNSS_cfg.dat:$(TARGET_COPY_OUT_SYSTEM)/etc/firmware/wlan/prima/WCNSS_cfg.dat \
@@ -492,7 +503,6 @@ PRODUCT_COPY_FILES += \
 
 
 # VNDK
-PRODUCT_EXTRA_VNDK_VERSIONS := 28 29 30
 PRODUCT_COPY_FILES += \
     prebuilts/vndk/v29/arm64/arch-arm64-armv8-a/shared/vndk-core/libprotobuf-cpp-lite.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libprotobuf-cpp-lite-v29.so \
     prebuilts/vndk/v29/arm64/arch-arm64-armv8-a/shared/vndk-core/libprotobuf-cpp-full.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libprotobuf-cpp-full-v29.so \
@@ -507,8 +517,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
     libcld80211 \
-    libqsap_sdk \
-    libQWiFiSoftApCfg \
     libwpa_client \
     hostapd \
     wificond \
@@ -548,3 +556,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
      persist.vendor.data.iwlan.enable=true \
      ro.telephony.iwlan_operation_mode=legacy
+
+PRODUCT_BROKEN_VERIFY_USES_LIBRARIES := true
+

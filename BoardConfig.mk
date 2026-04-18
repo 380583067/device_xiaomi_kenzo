@@ -1,18 +1,7 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
+# Copyright (C) 2021 The LineageOS Project
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 #
 
 DEVICE_PATH := device/xiaomi/kenzo
@@ -76,6 +65,9 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 TARGET_BOOTLOADER_BOARD_NAME := msm8952
 TARGET_NO_BOOTLOADER := true
 
+# Platform
+TARGET_BOARD_PLATFORM := msm8952
+
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/configs/bluetooth
 
@@ -130,6 +122,11 @@ TARGET_QCOM_NO_FM_FIRMWARE := true
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 DEVICE_MATRIX_FILE   := $(DEVICE_PATH)/compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
+    $(DEVICE_PATH)/framework_compatibility_matrix.xml \
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix_legacy.xml \
+    vendor/lineage/config/device_framework_matrix.xml
 
 # GNSS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
@@ -140,7 +137,7 @@ TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_msm
 TARGET_RECOVERY_DEVICE_MODULES := libinit_msm
 
 # Kernel
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom ehci-hcd.park=3 androidboot.boot_devices=soc/7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive androidboot.hardware=qcom ehci-hcd.park=3 androidboot.boot_devices=soc/7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M
 BOARD_KERNEL_CMDLINE += loop.max_part=7
 BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
@@ -193,10 +190,19 @@ USE_DEVICE_SPECIFIC_DATA_IPA_CFG_MGR := true
 TARGET_USES_ALTERNATIVE_MANUAL_NETWORK_SELECT := true
 
 # SELinux
-# include device/qcom/sepolicy-legacy/sepolicy.mk
-# BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
-# SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
-BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy-minimal
+SELINUX_IGNORE_NEVERALLOWS := true
+include device/qcom/sepolicy-legacy/sepolicy.mk
+#BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+#SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+#BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy-minimal
+
+# Security patch level
+VENDOR_SECURITY_PATCH := 2025-08-05
+
+# Treble
+BOARD_VNDK_VERSION := current
+PRODUCT_FULL_TREBLE_OVERRIDE := true
+BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 
 # Thermal
 USE_DEVICE_SPECIFIC_THERMAL := true

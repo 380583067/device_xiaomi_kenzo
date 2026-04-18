@@ -17,6 +17,6 @@ PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/lineage_kenzo.mk
 
 COMMON_LUNCH_CHOICES := \
-    lineage_kenzo-user \
-    lineage_kenzo-userdebug \
-    lineage_kenzo-eng
+    lineage_kenzo-ap2a-user \
+    lineage_kenzo-ap2a-userdebug \
+    lineage_kenzo-ap2a-eng

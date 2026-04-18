@@ -113,6 +113,7 @@ debug.sdm.support_writeback=0
 debug.sf.hw=0
 debug.sf.recomputecrop=0
 debug.sf.latch_unsignaled=0
+debug.renderengine.backend=gles
 dev.pm.dyn_samplingrate=1
 persist.demo.hdmirotationlock=false
 persist.hwc.mdpcomp.enable=true
@@ -225,6 +226,9 @@ persist.sys.wfd.virtual=0
 # Higher fling velocities for smooth scrolling and to provide better responsiveness - From HalogenOS Team
 ro.min.fling_velocity=140
 ro.max.fling_velocity=40000
+
+# Don't write binary XML files
+persist.sys.binary_xml=false
 
 # Disable Blur
 persist.sys.sf.disable_blurs=1
